@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
         
-        /* BOLD HEADER - Inspired by Behance Red Design */
+        /* BOLD HEADER */
         .hero {
             position: relative;
             background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
@@ -42,29 +42,9 @@
             height: 40px;
             background: white;
             clip-path: polygon(
-                0% 50%,
-                5% 30%,
-                10% 45%,
-                15% 20%,
-                20% 40%,
-                25% 15%,
-                30% 35%,
-                35% 25%,
-                40% 40%,
-                45% 20%,
-                50% 35%,
-                55% 15%,
-                60% 30%,
-                65% 20%,
-                70% 40%,
-                75% 25%,
-                80% 35%,
-                85% 20%,
-                90% 30%,
-                95% 25%,
-                100% 40%,
-                100% 100%,
-                0% 100%
+                0% 50%, 5% 30%, 10% 45%, 15% 20%, 20% 40%, 25% 15%, 30% 35%, 35% 25%, 40% 40%, 45% 20%,
+                50% 35%, 55% 15%, 60% 30%, 65% 20%, 70% 40%, 75% 25%, 80% 35%, 85% 20%, 90% 30%, 95% 25%,
+                100% 40%, 100% 100%, 0% 100%
             );
         }
         
@@ -169,16 +149,23 @@
             object-fit: cover;
         }
         
-        /* If no photo provided, show placeholder */
-        .hero-photo.placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Placeholder with emoji */
+        .hero-photo::before {
+            content: '📹';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 120px;
-            color: #e63946;
+            z-index: 1;
         }
         
-        /* FEATURED WORK SECTION */
+        .hero-photo img {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* SECTION STYLING */
         .section {
             padding: 80px 20px;
             max-width: 1200px;
@@ -208,7 +195,7 @@
         /* VIDEO GRID */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 40px;
         }
         
@@ -219,6 +206,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
             border: 2px solid #f5f5f5;
+            cursor: pointer;
         }
         
         .video-card:hover {
@@ -230,42 +218,39 @@
         .video-thumbnail {
             width: 100%;
             height: 220px;
-            background: linear-gradient(135deg, #e63946 0%, #c1121f 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: relative;
             overflow: hidden;
+            background: #000;
         }
         
         .video-thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s;
         }
         
-        /* Placeholder if no thumbnail */
-        .video-thumbnail.placeholder::before {
-            content: '▶';
-            font-size: 64px;
-            color: white;
-            z-index: 2;
-            position: relative;
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
         }
         
+        /* Play button overlay */
         .video-thumbnail::after {
-            content: '';
+            content: '▶';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: white;
+            background: rgba(230, 57, 70, 0.9);
             width: 80px;
             height: 80px;
-            background: rgba(0,0,0,0.6);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding-left: 8px;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -292,10 +277,11 @@
         }
         
         .video-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             margin-bottom: 12px;
             line-height: 1.3;
+            color: #1a1a1a;
         }
         
         .video-stats {
@@ -303,20 +289,50 @@
             gap: 20px;
             font-size: 14px;
             color: #666;
-            margin-bottom: 15px;
             font-weight: 600;
         }
         
-        .video-stat {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        /* VIEW MORE BUTTON */
+        .view-more-container {
+            text-align: center;
+            margin-top: 60px;
         }
         
-        .video-description {
-            font-size: 15px;
-            color: #555;
-            line-height: 1.6;
+        .view-more-btn {
+            display: inline-block;
+            background: #e63946;
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .view-more-btn:hover {
+            background: #c1121f;
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(230,57,70,0.4);
+        }
+        
+        /* MORE WORK SECTIONS - Hidden by default */
+        .more-work {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .more-work.visible {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* ABOUT SECTION */
@@ -491,7 +507,7 @@
     </style>
 </head>
 <body>
-    <!-- BOLD HERO SECTION -->
+    <!-- HERO SECTION -->
     <div class="hero">
         <div class="hero-content">
             <div class="hero-text">
@@ -523,139 +539,513 @@
                 </div>
             </div>
             
-            <!-- PHOTO - Replace with your actual photo -->
-            <div class="hero-photo placeholder">
-                <img src="your-photo.jpg" alt="Ronaldo Padaigas" style="display:none;">
-                😊
+            <!-- PHOTO - To add your photo: replace profile-photo.png with your actual image file -->
+            <div class="hero-photo">
+                <img src="profile-photo.png" alt="Ronaldo Padaigas" onerror="this.style.display='none'">
             </div>
         </div>
     </div>
 
-    <!-- FEATURED WORK SECTION -->
+    <!-- FEATURED WORK SECTION - TOP 6 -->
     <div class="section">
         <div class="section-header">
             <h2 class="section-title">Featured Work</h2>
             <p class="section-subtitle">
-                High-energy edits for top UK YouTube creators with millions of subscribers
+                Top-performing videos with millions of views for UK's biggest YouTube creators
             </p>
         </div>
         
         <div class="video-grid">
-            <!-- VIDEO CARD 1 - REPLACE WITH YOUR ACTUAL VIDEOS -->
-            <div class="video-card">
-                <div class="video-thumbnail placeholder">
-                    <!-- <img src="thumbnail1.jpg" alt="Video thumbnail"> -->
+            <!-- #1 - We Opened a 5 STAR Hotel (Beta Squad - 10M) -->
+            <a href="https://youtu.be/FNoBLlDdmjU" target="_blank" class="video-card" style="text-decoration: none;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/FNoBLlDdmjU/maxresdefault.jpg" alt="We Opened a 5 STAR Hotel">
                 </div>
                 <div class="video-info">
                     <span class="video-channel">Beta Squad</span>
-                    <h3 class="video-title">5 Star Hotel vs Private Jet Challenge</h3>
+                    <h3 class="video-title">We Opened a 5 STAR Hotel</h3>
                     <div class="video-stats">
-                        <span class="video-stat">📊 5M+ views</span>
-                        <span class="video-stat">⏱️ 24 min</span>
+                        <span>👁️ 10M views</span>
+                        <span>⏱️ 1:56:23</span>
                     </div>
-                    <p class="video-description">
-                        Co-edited this high-production challenge video for Beta Squad (20M+ subs). 
-                        Fast-paced editing, motion graphics, and dynamic transitions keeping viewers 
-                        engaged throughout.
-                    </p>
                 </div>
-            </div>
+            </a>
 
-            <!-- VIDEO CARD 2 -->
-            <div class="video-card">
-                <div class="video-thumbnail placeholder">
-                    <!-- <img src="thumbnail2.jpg" alt="Video thumbnail"> -->
+            <!-- #2 - 6 Kids Vs 2 Secret Adults (NDL - 13M) -->
+            <a href="https://youtu.be/09RqugzRO7A" target="_blank" class="video-card" style="text-decoration: none;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/09RqugzRO7A/maxresdefault.jpg" alt="6 Kids Vs 2 Secret Adults">
+                </div>
+                <div class="video-info">
+                    <span class="video-channel">NDL</span>
+                    <h3 class="video-title">6 Kids Vs 2 Secret Adults</h3>
+                    <div class="video-stats">
+                        <span>👁️ 13M views</span>
+                        <span>⏱️ 41:13</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- #3 - 6 Women Vs 2 Secret Men (NDL - 11M) -->
+            <a href="https://youtu.be/ZUOLyEtl9hk" target="_blank" class="video-card" style="text-decoration: none;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/ZUOLyEtl9hk/maxresdefault.jpg" alt="6 Women Vs 2 Secret Men">
                 </div>
                 <div class="video-info">
                     <span class="video-channel">NDL</span>
                     <h3 class="video-title">6 Women Vs 2 Secret Men</h3>
                     <div class="video-stats">
-                        <span class="video-stat">📊 3M+ views</span>
-                        <span class="video-stat">⏱️ 18 min</span>
+                        <span>👁️ 11M views</span>
+                        <span>⏱️ 37:13</span>
                     </div>
-                    <p class="video-description">
-                        Full edit for NDL featuring rapid-pace cuts, engaging storytelling, and 
-                        audience retention optimization. Managed motion graphics and sound design.
-                    </p>
                 </div>
-            </div>
+            </a>
 
-            <!-- VIDEO CARD 3 -->
-            <div class="video-card">
-                <div class="video-thumbnail placeholder">
-                    <!-- <img src="thumbnail3.jpg" alt="Video thumbnail"> -->
+            <!-- #4 - Guess The Language vs Asia Expert (7M) -->
+            <a href="https://youtu.be/p_CvFgP4y-w" target="_blank" class="video-card" style="text-decoration: none;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/p_CvFgP4y-w/maxresdefault.jpg" alt="Guess The Language vs Asia Expert">
                 </div>
                 <div class="video-info">
                     <span class="video-channel">NDL</span>
-                    <h3 class="video-title">[Your Top NDL Video #2]</h3>
+                    <h3 class="video-title">Guess The Language vs Asia Expert</h3>
                     <div class="video-stats">
-                        <span class="video-stat">📊 2M+ views</span>
-                        <span class="video-stat">⏱️ 20 min</span>
+                        <span>👁️ 7M views</span>
+                        <span>⏱️ 30:08</span>
                     </div>
-                    <p class="video-description">
-                        High-energy IRL content with dynamic cuts and engaging pacing. Full 
-                        post-production including color grading and sound mixing.
-                    </p>
                 </div>
-            </div>
+            </a>
 
-            <!-- VIDEO CARD 4 -->
-            <div class="video-card">
-                <div class="video-thumbnail placeholder">
-                    <!-- <img src="thumbnail4.jpg" alt="Video thumbnail"> -->
-                </div>
-                <div class="video-info">
-                    <span class="video-channel">Niko Omilana</span>
-                    <h3 class="video-title">[Niko Video Title]</h3>
-                    <div class="video-stats">
-                        <span class="video-stat">📊 4M+ views</span>
-                        <span class="video-stat">⏱️ 16 min</span>
-                    </div>
-                    <p class="video-description">
-                        Documentary-style content for 7M+ subscriber channel. Storytelling-focused 
-                        edit with tight pacing and strong audience engagement.
-                    </p>
-                </div>
-            </div>
-
-            <!-- VIDEO CARD 5 -->
-            <div class="video-card">
-                <div class="video-thumbnail placeholder">
-                    <!-- <img src="thumbnail5.jpg" alt="Video thumbnail"> -->
+            <!-- #5 - 6 Short People Vs 2 Secret Tall People (4M) -->
+            <a href="https://youtu.be/3D60MIQdrNE" target="_blank" class="video-card" style="text-decoration: none;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/3D60MIQdrNE/maxresdefault.jpg" alt="6 Short People Vs 2 Secret Tall People">
                 </div>
                 <div class="video-info">
                     <span class="video-channel">NDL</span>
-                    <h3 class="video-title">[Your Top NDL Video #3]</h3>
+                    <h3 class="video-title">6 Short People Vs 2 Secret Tall People</h3>
                     <div class="video-stats">
-                        <span class="video-stat">📊 1.5M+ views</span>
-                        <span class="video-stat">⏱️ 22 min</span>
+                        <span>👁️ 4M views</span>
+                        <span>⏱️ 44:06</span>
                     </div>
-                    <p class="video-description">
-                        Challenge video with creative transitions and motion graphics. Fast 
-                        turnaround delivery (6-day production timeline).
-                    </p>
                 </div>
-            </div>
+            </a>
 
-            <!-- VIDEO CARD 6 -->
-            <div class="video-card">
-                <div class="video-thumbnail placeholder">
-                    <!-- <img src="thumbnail6.jpg" alt="Video thumbnail"> -->
+            <!-- #6 - I Tried Every VIP Experience (2.7M) - VLOG STYLE -->
+            <a href="https://youtu.be/O0CpU_XSy9A" target="_blank" class="video-card" style="text-decoration: none;">
+                <div class="video-thumbnail">
+                    <img src="https://img.youtube.com/vi/O0CpU_XSy9A/maxresdefault.jpg" alt="I Tried Every VIP Experience in my City">
                 </div>
                 <div class="video-info">
-                    <span class="video-channel">Red Bull Media</span>
-                    <h3 class="video-title">Pro Mountain Biking Series</h3>
+                    <span class="video-channel">NDL</span>
+                    <h3 class="video-title">I Tried Every VIP Experience in my City!</h3>
                     <div class="video-stats">
-                        <span class="video-stat">📊 500K+ views</span>
-                        <span class="video-stat">⏱️ 8 min</span>
+                        <span>👁️ 2.7M views</span>
+                        <span>⏱️ 23:08</span>
                     </div>
-                    <p class="video-description">
-                        Action sports content featuring dynamic editing, color grading, and 
-                        high-production value finishing for Red Bull Racing.
+                </div>
+            </a>
+        </div>
+
+        <!-- VIEW MORE BUTTON -->
+        <div class="view-more-container">
+            <button class="view-more-btn" onclick="toggleMoreWork()">View More Work</button>
+        </div>
+    </div>
+
+    <!-- MORE WORK SECTIONS (Hidden by default) -->
+    <div class="more-work" id="moreWork">
+        
+        <!-- ENTERTAINMENT/CHALLENGE WORK SECTION -->
+        <div class="section" style="background: #fafafa; margin: 0; max-width: 100%; padding: 80px 20px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <div class="section-header">
+                    <h2 class="section-title">Entertainment & Challenge Content</h2>
+                    <p class="section-subtitle">
+                        High-energy challenge videos and IRL content
                     </p>
+                </div>
+                
+                <div class="video-grid">
+                    <a href="https://www.youtube.com/watch?v=D8JhpkaKjhw" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/D8JhpkaKjhw/maxresdefault.jpg" alt="What Can £100 Get You In Philippines">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">What Can £100 Get You In Philippines</h3>
+                            <div class="video-stats">
+                                <span>👁️ 3.6M views</span>
+                                <span>⏱️ 20:15</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/6RWDMo6BBns" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/6RWDMo6BBns/maxresdefault.jpg" alt="Eating The Best Foods From Every Country">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Eating The Best Foods From Every Country: Africa Edition</h3>
+                            <div class="video-stats">
+                                <span>👁️ 1.4M views</span>
+                                <span>⏱️ 21:48</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/IlGJNnxGamA" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/IlGJNnxGamA/maxresdefault.jpg" alt="6 High Schoolers Vs 2 Secret Adults">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">6 High Schoolers Vs 2 Secret Adults</h3>
+                            <div class="video-stats">
+                                <span>👁️ 4.6M views</span>
+                                <span>⏱️ 35:21</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/Pw2uPudD8OI" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/Pw2uPudD8OI/maxresdefault.jpg" alt="Guess The Language vs Europe Expert">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Guess The Language vs Europe Expert</h3>
+                            <div class="video-stats">
+                                <span>👁️ 4.6M views</span>
+                                <span>⏱️ 27:07</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/1Bm_4EBkGPw" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/1Bm_4EBkGPw/maxresdefault.jpg" alt="Guess The Language ft Every Country in Asia">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Guess The Language ft Every Country in Asia</h3>
+                            <div class="video-stats">
+                                <span>👁️ 3.2M views</span>
+                                <span>⏱️ 1:59:08</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=mTWJ0n3ZOKI" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/mTWJ0n3ZOKI/maxresdefault.jpg" alt="Guess The Secret Kid">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Guess The Secret Kid</h3>
+                            <div class="video-stats">
+                                <span>👁️ 3.1M views</span>
+                                <span>⏱️ 34:57</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/knp_CwHd_ts" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/knp_CwHd_ts/maxresdefault.jpg" alt="5 Adults Vs 1 Secret Baby">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">5 Adults Vs 1 Secret Baby Ft Beta Squad</h3>
+                            <div class="video-stats">
+                                <span>👁️ 3M views</span>
+                                <span>⏱️ 23:53</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/fpyaS3ex40M" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/fpyaS3ex40M/maxresdefault.jpg" alt="6 Adults Vs 2 Secret Kids">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">6 Adults Vs 2 Secret Kids</h3>
+                            <div class="video-stats">
+                                <span>👁️ 2.7M views</span>
+                                <span>⏱️ 44:04</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/cl1NTCJ00so" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/cl1NTCJ00so/maxresdefault.jpg" alt="YouTubers vs The Public">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">YouTubers vs The Public</h3>
+                            <div class="video-stats">
+                                <span>👁️ 2.2M views</span>
+                                <span>⏱️ 40:40</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/6-IFfxgFsQc" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/6-IFfxgFsQc/maxresdefault.jpg" alt="Real Life Guess Who: YouTuber Edition">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Real Life Guess Who: YouTuber Edition</h3>
+                            <div class="video-stats">
+                                <span>👁️ 2M views</span>
+                                <span>⏱️ 28:46</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/gfi1r9m-rPc" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/gfi1r9m-rPc/maxresdefault.jpg" alt="Eating The Spiciest Food From Every Country">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Eating The Spiciest Food From Every Country: Europe Edition</h3>
+                            <div class="video-stats">
+                                <span>👁️ 2M views</span>
+                                <span>⏱️ 35:43</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/2L5Q_MOjjVM" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/2L5Q_MOjjVM/maxresdefault.jpg" alt="Guess The Liar">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Guess The Liar</h3>
+                            <div class="video-stats">
+                                <span>👁️ 2M views</span>
+                                <span>⏱️ 42:32</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/ComCbrctdYc" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/ComCbrctdYc/maxresdefault.jpg" alt="Man vs Food: Extreme Edition">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Man vs Food: Extreme Edition</h3>
+                            <div class="video-stats">
+                                <span>👁️ 1.5M views</span>
+                                <span>⏱️ 34:15</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=uKFG3C2QayA" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/uKFG3C2QayA/maxresdefault.jpg" alt="I Went To The World's Richest Country">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">I Went To The World's Richest Country</h3>
+                            <div class="video-stats">
+                                <span>👁️ 1.1M views</span>
+                                <span>⏱️ 21:32</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/jN-iPwUzQAg" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/jN-iPwUzQAg/maxresdefault.jpg" alt="Match The Singer To The Voice">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">NDL</span>
+                            <h3 class="video-title">Match The Singer To The Voice</h3>
+                            <div class="video-stats">
+                                <span>👁️ 1M views</span>
+                                <span>⏱️ 18:49</span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://youtu.be/MykumlwRZHQ" target="_blank" class="video-card" style="text-decoration: none;">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/MykumlwRZHQ/maxresdefault.jpg" alt="Building My Dream Home Gym">
+                        </div>
+                        <div class="video-info">
+                            <span class="video-channel">Behzinga</span>
+                            <h3 class="video-title">Building My Dream Home Gym</h3>
+                            <div class="video-stats">
+                                <span>👁️ 1M views</span>
+                                <span>⏱️ 10:17</span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
+
+        <!-- VERSATILITY SECTION -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">Versatility: Gaming, Business & Education</h2>
+                <p class="section-subtitle">
+                    Showcasing range across different content styles
+                </p>
+            </div>
+            
+            <div class="video-grid">
+                <a href="https://www.youtube.com/watch?v=ywJIY4uKubY" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/ywJIY4uKubY/maxresdefault.jpg" alt="250 Java vs Bedrock Differences">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Gaming</span>
+                        <h3 class="video-title">250 Java vs Bedrock Differences</h3>
+                        <div class="video-stats">
+                            <span>👁️ 2.8M views</span>
+                            <span>⏱️ 55:35</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=GXMOHR0Q90w" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/GXMOHR0Q90w/maxresdefault.jpg" alt="I Tried 73 Freelancing Jobs">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Business</span>
+                        <h3 class="video-title">I Tried 73 Freelancing Jobs, These Are The Best</h3>
+                        <div class="video-stats">
+                            <span>👁️ 152K views</span>
+                            <span>⏱️ 4:32</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=9DRrB0Qo-aA" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/9DRrB0Qo-aA/maxresdefault.jpg" alt="Snowshoe XCO Highlights">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Sports</span>
+                        <h3 class="video-title">Nobody could have called this race! Snowshoe XCO Highlights 2022</h3>
+                        <div class="video-stats">
+                            <span>👁️ 92K views</span>
+                            <span>⏱️ 10:17</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=GiYiXctiT4c" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/GiYiXctiT4c/maxresdefault.jpg" alt="YouTube Secrets With Joe Fazer">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Podcast</span>
+                        <h3 class="video-title">From 0 To 31 Million Views | YouTube Secrets With Joe Fazer</h3>
+                        <div class="video-stats">
+                            <span>👁️ 12K views</span>
+                            <span>⏱️ 1:22:09</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=GuXYdQbhJic" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/GuXYdQbhJic/maxresdefault.jpg" alt="LinkedIn Marketing">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Business</span>
+                        <h3 class="video-title">LinkedIn Marketing: How To Grow An Audience On LinkedIn in 2026</h3>
+                        <div class="video-stats">
+                            <span>👁️ 7K views</span>
+                            <span>⏱️ 9:30</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=MLnU5sP8QBc" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/MLnU5sP8QBc/maxresdefault.jpg" alt="Google Ads Strategy">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Business</span>
+                        <h3 class="video-title">The Best Google Ads Strategy For Beginners in 2024</h3>
+                        <div class="video-stats">
+                            <span>👁️ 7K views</span>
+                            <span>⏱️ 19:04</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=9U16my7X-VI" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/9U16my7X-VI/maxresdefault.jpg" alt="From Council Estate To Dubai">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Podcast</span>
+                        <h3 class="video-title">From Council Estate To Dubai | Ex-Runescape Addict Ally Law</h3>
+                        <div class="video-stats">
+                            <span>👁️ 6.5K views</span>
+                            <span>⏱️ 2:23:03</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=hU7JJELTC-c" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/hU7JJELTC-c/maxresdefault.jpg" alt="Ecommerce Email Marketing">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Business</span>
+                        <h3 class="video-title">Ecommerce Email Marketing: Everything You Need to Know in 5 Minutes</h3>
+                        <div class="video-stats">
+                            <span>👁️ 5K views</span>
+                            <span>⏱️ 5:02</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=cq4ULnfWmT4" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/cq4ULnfWmT4/maxresdefault.jpg" alt="Build a Lead Generation Agency">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Business</span>
+                        <h3 class="video-title">How to Build a Lead Generation Agency in 2025</h3>
+                        <div class="video-stats">
+                            <span>👁️ 4.6K views</span>
+                            <span>⏱️ 8:10</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/watch?v=LARbrwtEO_c" target="_blank" class="video-card" style="text-decoration: none;">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/LARbrwtEO_c/maxresdefault.jpg" alt="Find Companies Data">
+                    </div>
+                    <div class="video-info">
+                        <span class="video-channel">Business</span>
+                        <h3 class="video-title">Find 1000s Of Companies' Data In Seconds!</h3>
+                        <div class="video-stats">
+                            <span>👁️ 2K views</span>
+                            <span>⏱️ 5:19</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
     </div>
 
     <!-- ABOUT SECTION -->
@@ -685,7 +1075,6 @@
                     <div class="client-badge-box">Red Bull</div>
                     <div class="client-badge-box">LEGO</div>
                     <div class="client-badge-box">Behzinga</div>
-                    <div class="client-badge-box">Jay Swingler</div>
                 </div>
             </div>
         </div>
@@ -709,5 +1098,26 @@
         
         <a href="mailto:rprod2649@gmail.com" class="cta-button">Get In Touch</a>
     </div>
+
+    <script>
+        function toggleMoreWork() {
+            const moreWork = document.getElementById('moreWork');
+            const button = document.querySelector('.view-more-btn');
+            
+            if (moreWork.classList.contains('visible')) {
+                moreWork.classList.remove('visible');
+                button.textContent = 'View More Work';
+                // Scroll back to button
+                button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                moreWork.classList.add('visible');
+                button.textContent = 'Hide More Work';
+                // Smooth scroll to the newly revealed content
+                setTimeout(() => {
+                    moreWork.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+    </script>
 </body>
 </html>
